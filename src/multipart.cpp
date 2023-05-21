@@ -164,7 +164,25 @@ void S3_initiate_multipart(const S3BucketContext *bucketContext, const char *key
 void S3_abort_multipart_upload(const S3BucketContext *bucketContext, const char *key,
                                const char *uploadId,
                                int timeoutMs,
-                               S3AbortMultipartUploadHandler *handler)
+                               const S3AbortMultipartUploadHandler *handler)
+{
+  S3_abort_multipart_upload_ex(
+    bucketContext,
+    key,
+    uploadId,
+    handler,
+    0,
+    timeoutMs,
+    0);
+}
+
+
+void S3_abort_multipart_upload_ex(const S3BucketContext *bucketContext, const char *key,
+                                  const char *uploadId,
+                                  const S3AbortMultipartUploadHandler *handler,
+                                  S3RequestContext *requestContext,
+                                  int timeoutMs,
+                                  void *callbackData)
 {
     char subResource[512];
     snprintf(subResource, 512, "uploadId=%s", uploadId);
@@ -193,14 +211,16 @@ void S3_abort_multipart_upload(const S3BucketContext *bucketContext, const char 
         0,                                            // toS3Callback
         0,                                            // toS3CallbackTotalSize
         0,                                            // fromS3Callback
-        AbortMultipartUploadCompleteCallback,         // completeCallback
-        0,                                            // callbackData
+        //  This shim is for backwards compatibility so S3_abort_multipart_upload
+        //  continues to function properly
+        callbackData ? handler->responseHandler.completeCallback : AbortMultipartUploadCompleteCallback,    // completeCallback
+        callbackData,                                 // callbackData
         timeoutMs,                                    // timeoutMs
-        0                                             // curlCallbackData
+        callbackData                                  // curlCallbackData
     };
 
     // Perform the request
-    request_perform(&params, 0);
+    request_perform(&params, requestContext);
 }
 
 
