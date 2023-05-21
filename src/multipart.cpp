@@ -62,14 +62,14 @@ static void InitialMultipartCompleteCallback
 {
     InitialMultipartData *mdata = (InitialMultipartData *) callbackData;
 
-    if (mdata->handler->responseHandler.completeCallback) {
-        (*mdata->handler->responseHandler.completeCallback)
-            (requestStatus, s3ErrorDetails, mdata->userdata);
-    }
-
     if (mdata->handler->responseXmlCallback) {
         (*mdata->handler->responseXmlCallback)
             (mdata->upload_id, mdata->userdata);
+    }
+
+    if (mdata->handler->responseHandler.completeCallback) {
+        (*mdata->handler->responseHandler.completeCallback)
+            (requestStatus, s3ErrorDetails, mdata->userdata);
     }
 
     simplexml_deinitialize(&(mdata->simpleXml));
@@ -314,13 +314,13 @@ static void commitMultipartCompleteCallback
      void *callbackData)
 {
     CommitMultiPartData *data = (CommitMultiPartData*) callbackData;
-    if (data->handler->responseHandler.completeCallback) {
-        (*(data->handler->responseHandler.completeCallback))
-            (requestStatus, s3ErrorDetails, data->userdata);
-    }
     if (data->handler->responseXmlCallback) {
         (*data->handler->responseXmlCallback)(data->location, data->etag,
                                               data->userdata);
+    }
+    if (data->handler->responseHandler.completeCallback) {
+        (*(data->handler->responseHandler.completeCallback))
+            (requestStatus, s3ErrorDetails, data->userdata);
     }
     simplexml_deinitialize(&(data->simplexml));
     free(data);
