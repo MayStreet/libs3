@@ -2590,6 +2590,12 @@ void S3_abort_multipart_upload(const S3BucketContext *bucketContext, const char 
                                const char *uploadId,
                                int timeoutMs,
                                const S3AbortMultipartUploadHandler *handler);
+void S3_abort_multipart_upload_ex(const S3BucketContext *bucketContext, const char *key,
+                                  const char *uploadId,
+                                  const S3AbortMultipartUploadHandler *handler,
+                                  S3RequestContext *requestContext,
+                                  int timeoutMs,
+                                  void *callbackData);
 
 
 /**
