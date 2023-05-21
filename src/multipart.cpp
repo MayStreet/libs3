@@ -44,7 +44,7 @@ typedef struct InitialMultipartData
 {
     SimpleXml simpleXml;
     int len;
-    S3MultipartInitialHandler *handler;
+    const S3MultipartInitialHandler *handler;
     string_buffer(upload_id, 256);
     void *userdata;
 } InitialMultipartData;
@@ -111,9 +111,9 @@ static S3Status InitialMultipartPropertiesCallback(const S3ResponseProperties *p
 }
 
 
-void S3_initiate_multipart(S3BucketContext *bucketContext, const char *key,
-                          S3PutProperties *putProperties,
-                          S3MultipartInitialHandler *handler,
+void S3_initiate_multipart(const S3BucketContext *bucketContext, const char *key,
+                          const S3PutProperties *putProperties,
+                          const S3MultipartInitialHandler *handler,
                           S3RequestContext *requestContext,
                           int timeoutMs,
                           void *callbackData)
@@ -161,7 +161,7 @@ void S3_initiate_multipart(S3BucketContext *bucketContext, const char *key,
 }
 
 
-void S3_abort_multipart_upload(S3BucketContext *bucketContext, const char *key,
+void S3_abort_multipart_upload(const S3BucketContext *bucketContext, const char *key,
                                const char *uploadId,
                                int timeoutMs,
                                S3AbortMultipartUploadHandler *handler)
@@ -208,9 +208,9 @@ void S3_abort_multipart_upload(S3BucketContext *bucketContext, const char *key,
  * S3 Upload Part
  */
 
-void S3_upload_part(S3BucketContext *bucketContext, const char *key,
-                    S3PutProperties *putProperties,
-                    S3PutObjectHandler *handler, int seq,
+void S3_upload_part(const S3BucketContext *bucketContext, const char *key,
+                    const S3PutProperties *putProperties,
+                    const S3PutObjectHandler *handler, int seq,
                     const char *upload_id, int partContentLength,
                     S3RequestContext *requestContext,
                     int timeoutMs,
@@ -261,7 +261,7 @@ void S3_upload_part(S3BucketContext *bucketContext, const char *key,
 typedef struct CommitMultiPartData {
     SimpleXml simplexml;
     void *userdata;
-    S3MultipartCommitHandler *handler;
+    const S3MultipartCommitHandler *handler;
     //response parsed from
     string_buffer(location,128);
     string_buffer(etag,128);
@@ -340,9 +340,9 @@ static int commitMultipartPutObject(int bufferSize, char *buffer,
     }
 }
 
-void S3_complete_multipart_upload(S3BucketContext *bucketContext,
+void S3_complete_multipart_upload(const S3BucketContext *bucketContext,
                                   const char *key,
-                                  S3MultipartCommitHandler *handler,
+                                  const S3MultipartCommitHandler *handler,
                                   const char *upload_id, int contentLength,
                                   S3RequestContext *requestContext,
                                   int timeoutMs,

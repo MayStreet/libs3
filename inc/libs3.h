@@ -2470,9 +2470,9 @@ void S3_set_server_access_logging(const S3BucketContext *bucketContext,
  * @param callbackData will be passed in as the callbackData parameter to
  *        all callbacks for this request
  **/
-void S3_initiate_multipart(S3BucketContext *bucketContext, const char *key,
-                           S3PutProperties *putProperties,
-                           S3MultipartInitialHandler *handler,
+void S3_initiate_multipart(const S3BucketContext *bucketContext, const char *key,
+                           const S3PutProperties *putProperties,
+                           const S3MultipartInitialHandler *handler,
                            S3RequestContext *requestContext,
                            int timeoutMs,
                            void *callbackData);
@@ -2500,9 +2500,9 @@ void S3_initiate_multipart(S3BucketContext *bucketContext, const char *key,
  * @param callbackData will be passed in as the callbackData parameter to
  *        all callbacks for this request
  **/
-void S3_upload_part(S3BucketContext *bucketContext, const char *key,
-                    S3PutProperties * putProperties,
-                    S3PutObjectHandler *handler,
+void S3_upload_part(const S3BucketContext *bucketContext, const char *key,
+                    const S3PutProperties * putProperties,
+                    const S3PutObjectHandler *handler,
                     int seq, const char *upload_id, int partContentLength,
                     S3RequestContext *requestContext,
                     int timeoutMs,
@@ -2528,9 +2528,9 @@ void S3_upload_part(S3BucketContext *bucketContext, const char *key,
  * @param callbackData will be passed in as the callbackData parameter to
  *        all callbacks for this request
  **/
-void S3_complete_multipart_upload(S3BucketContext *bucketContext,
+void S3_complete_multipart_upload(const S3BucketContext *bucketContext,
                                   const char *key,
-                                  S3MultipartCommitHandler *handler,
+                                  const S3MultipartCommitHandler *handler,
                                   const char *upload_id,
                                   int contentLength,
                                   S3RequestContext *requestContext,
@@ -2586,10 +2586,10 @@ void S3_list_parts(S3BucketContext *bucketContext, const char *key,
  * @param handler gives the callbacks to call as the request is processed and
  *        completed
  **/
-void S3_abort_multipart_upload(S3BucketContext *bucketContext, const char *key,
+void S3_abort_multipart_upload(const S3BucketContext *bucketContext, const char *key,
                                const char *uploadId,
                                int timeoutMs,
-                               S3AbortMultipartUploadHandler *handler);
+                               const S3AbortMultipartUploadHandler *handler);
 
 
 /**
