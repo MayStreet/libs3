@@ -46,6 +46,9 @@ void S3_put_object(const S3BucketContext *bucketContext, const char *key,
                    const S3PutObjectHandler *handler, void *callbackData)
 {
     // Set up the RequestParams
+    const auto fromS3Callback = [](const int, const char* const, void* const) {
+      return S3StatusOK;
+    };
     RequestParams params =
     {
         HttpRequestTypePUT,                           // httpRequestType
@@ -68,8 +71,8 @@ void S3_put_object(const S3BucketContext *bucketContext, const char *key,
         putProperties,                                // putProperties
         handler->responseHandler.propertiesCallback,  // propertiesCallback
         handler->putObjectDataCallback,               // toS3Callback
-        contentLength,                                // toS3CallbackTotalSize
-        0,                                            // fromS3Callback
+        int64_t(contentLength),                       // toS3CallbackTotalSize
+        fromS3Callback,                               // fromS3Callback
         handler->responseHandler.completeCallback,    // completeCallback
         callbackData,                                 // callbackData
         timeoutMs,                                    // timeoutMs
