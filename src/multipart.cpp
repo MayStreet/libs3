@@ -239,6 +239,9 @@ void S3_upload_part(const S3BucketContext *bucketContext, const char *key,
     char queryParams[512];
     snprintf(queryParams, 512, "partNumber=%d&uploadId=%s", seq, upload_id);
 
+    const auto fromS3Callback = [](const int, const char* const, void* const) {
+      return S3StatusOK;
+    };
     RequestParams params =
     {
         HttpRequestTypePUT,                           // httpRequestType
@@ -262,7 +265,7 @@ void S3_upload_part(const S3BucketContext *bucketContext, const char *key,
         handler->responseHandler.propertiesCallback,  // propertiesCallback
         handler->putObjectDataCallback,               // toS3Callback
         partContentLength,                            // toS3CallbackTotalSize
-        0,                                            // fromS3Callback
+        fromS3Callback,                               // fromS3Callback
         handler->responseHandler.completeCallback,    // completeCallback
         callbackData,                                 // callbackData
         timeoutMs,                                    // timeoutMs
