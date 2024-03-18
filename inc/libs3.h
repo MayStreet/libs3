@@ -449,6 +449,13 @@ typedef enum
 } S3UriStyle;
 
 
+typedef enum
+{
+    S3RequestPayerOwner     = 0,
+    S3RequestPayerRequester = 1
+} S3RequestPayer;
+
+
 /**
  * S3GranteeType defines the type of Grantee used in an S3 ACL Grant.
  * Amazon Customer By Email - identifies the Grantee using their Amazon S3
@@ -743,6 +750,8 @@ typedef struct S3BucketContext
      * If NULL, the default region ("us-east-1") will be used.
      */
     const char *authRegion;
+
+    S3RequestPayer requestPayer;
 } S3BucketContext;
 
 

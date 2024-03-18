@@ -137,14 +137,7 @@ void S3_get_acl(const S3BucketContext *bucketContext, const char *key,
     RequestParams params =
     {
         HttpRequestTypeGET,                           // httpRequestType
-        { bucketContext->hostName,                    // hostName
-          bucketContext->bucketName,                  // bucketName
-          bucketContext->protocol,                    // protocol
-          bucketContext->uriStyle,                    // uriStyle
-          bucketContext->accessKeyId,                 // accessKeyId
-          bucketContext->secretAccessKey,             // secretAccessKey
-          bucketContext->securityToken,               // securityToken
-          bucketContext->authRegion },                // authRegion
+        *bucketContext,
         key,                                          // key
         0,                                            // queryParams
         "acl",                                        // subResource
@@ -344,14 +337,7 @@ void S3_set_acl(const S3BucketContext *bucketContext, const char *key,
     RequestParams params =
     {
         HttpRequestTypePUT,                           // httpRequestType
-        { bucketContext->hostName,                    // hostName
-          bucketContext->bucketName,                  // bucketName
-          bucketContext->protocol,                    // protocol
-          bucketContext->uriStyle,                    // uriStyle
-          bucketContext->accessKeyId,                 // accessKeyId
-          bucketContext->secretAccessKey,             // secretAccessKey
-          bucketContext->securityToken,               // securityToken
-          bucketContext->authRegion },                // authRegion
+        *bucketContext,
         key,                                          // key
         0,                                            // queryParams
         "acl",                                        // subResource
@@ -453,14 +439,7 @@ void S3_get_lifecycle(const S3BucketContext *bucketContext,
     RequestParams params =
     {
         HttpRequestTypeGET,                           // httpRequestType
-        { bucketContext->hostName,                    // hostName
-          bucketContext->bucketName,                  // bucketName
-          bucketContext->protocol,                    // protocol
-          bucketContext->uriStyle,                    // uriStyle
-          bucketContext->accessKeyId,                 // accessKeyId
-          bucketContext->secretAccessKey,             // secretAccessKey
-          bucketContext->securityToken,               // securityToken
-          bucketContext->authRegion },                // authRegion
+        *bucketContext,
         0,                                            // key
         0,                                            // queryParams
         "lifecycle",                                  // subResource
@@ -578,14 +557,7 @@ void S3_set_lifecycle(const S3BucketContext *bucketContext,
     RequestParams params =
     {
         HttpRequestTypePUT,                           // httpRequestType
-        { bucketContext->hostName,                    // hostName
-          bucketContext->bucketName,                  // bucketName
-          bucketContext->protocol,                    // protocol
-          bucketContext->uriStyle,                    // uriStyle
-          bucketContext->accessKeyId,                 // accessKeyId
-          bucketContext->secretAccessKey,             // secretAccessKey
-          bucketContext->securityToken,               // securityToken
-          bucketContext->authRegion },                // authRegion
+        *bucketContext,
         0,                                            // key
         0,                                            // queryParams
         "lifecycle",                                  // subResource
