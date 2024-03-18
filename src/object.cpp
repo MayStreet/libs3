@@ -52,14 +52,7 @@ void S3_put_object(const S3BucketContext *bucketContext, const char *key,
     RequestParams params =
     {
         HttpRequestTypePUT,                           // httpRequestType
-        { bucketContext->hostName,                    // hostName
-          bucketContext->bucketName,                  // bucketName
-          bucketContext->protocol,                    // protocol
-          bucketContext->uriStyle,                    // uriStyle
-          bucketContext->accessKeyId,                 // accessKeyId
-          bucketContext->secretAccessKey,             // secretAccessKey
-          bucketContext->securityToken,               // securityToken
-          bucketContext->authRegion },                // authRegion
+        *bucketContext,
         key,                                          // key
         0,                                            // queryParams
         0,                                            // subResource
@@ -247,15 +240,7 @@ void S3_copy_object_range(const S3BucketContext *bucketContext, const char *key,
     RequestParams params =
     {
         HttpRequestTypeCOPY,                          // httpRequestType
-        { bucketContext->hostName,                    // hostName
-          destinationBucket ? destinationBucket :
-          bucketContext->bucketName,                  // bucketName
-          bucketContext->protocol,                    // protocol
-          bucketContext->uriStyle,                    // uriStyle
-          bucketContext->accessKeyId,                 // accessKeyId
-          bucketContext->secretAccessKey,             // secretAccessKey
-          bucketContext->securityToken,               // securityToken
-          bucketContext->authRegion },                // authRegion
+        *bucketContext,
         destinationKey ? destinationKey : key,        // key
         qp,                                           // queryParams
         0,                                            // subResource
@@ -274,6 +259,9 @@ void S3_copy_object_range(const S3BucketContext *bucketContext, const char *key,
         timeoutMs,                                    // timeoutMs
         callbackData                                  // curlCallbackData
     };
+    if (destinationBucket) {
+        params.bucketContext.bucketName = destinationBucket;
+    }
 
     // Perform the request
     request_perform(&params, requestContext);
@@ -293,14 +281,7 @@ void S3_get_object(const S3BucketContext *bucketContext, const char *key,
     RequestParams params =
     {
         HttpRequestTypeGET,                           // httpRequestType
-        { bucketContext->hostName,                    // hostName
-          bucketContext->bucketName,                  // bucketName
-          bucketContext->protocol,                    // protocol
-          bucketContext->uriStyle,                    // uriStyle
-          bucketContext->accessKeyId,                 // accessKeyId
-          bucketContext->secretAccessKey,             // secretAccessKey
-          bucketContext->securityToken,               // securityToken
-          bucketContext->authRegion },                // authRegion
+        *bucketContext,
         key,                                          // key
         0,                                            // queryParams
         0,                                            // subResource
@@ -336,14 +317,7 @@ void S3_head_object(const S3BucketContext *bucketContext, const char *key,
     RequestParams params =
     {
         HttpRequestTypeHEAD,                          // httpRequestType
-        { bucketContext->hostName,                    // hostName
-          bucketContext->bucketName,                  // bucketName
-          bucketContext->protocol,                    // protocol
-          bucketContext->uriStyle,                    // uriStyle
-          bucketContext->accessKeyId,                 // accessKeyId
-          bucketContext->secretAccessKey,             // secretAccessKey
-          bucketContext->securityToken,               // securityToken
-          bucketContext->authRegion },                // authRegion
+        *bucketContext,
         key,                                          // key
         0,                                            // queryParams
         0,                                            // subResource
@@ -379,14 +353,7 @@ void S3_delete_object(const S3BucketContext *bucketContext, const char *key,
     RequestParams params =
     {
         HttpRequestTypeDELETE,                        // httpRequestType
-        { bucketContext->hostName,                    // hostName
-          bucketContext->bucketName,                  // bucketName
-          bucketContext->protocol,                    // protocol
-          bucketContext->uriStyle,                    // uriStyle
-          bucketContext->accessKeyId,                 // accessKeyId
-          bucketContext->secretAccessKey,             // secretAccessKey
-          bucketContext->securityToken,               // securityToken
-          bucketContext->authRegion },                // authRegion
+        *bucketContext,
         key,                                          // key
         0,                                            // queryParams
         0,                                            // subResource

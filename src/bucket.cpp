@@ -754,14 +754,7 @@ void S3_list_bucket(const S3BucketContext *bucketContext, const char *prefix,
     RequestParams params =
     {
         HttpRequestTypeGET,                           // httpRequestType
-        { bucketContext->hostName,                    // hostName
-          bucketContext->bucketName,                  // bucketName
-          bucketContext->protocol,                    // protocol
-          bucketContext->uriStyle,                    // uriStyle
-          bucketContext->accessKeyId,                 // accessKeyId
-          bucketContext->secretAccessKey,             // secretAccessKey
-          bucketContext->securityToken,               // securityToken
-          bucketContext->authRegion },                // authRegion
+        *bucketContext,
         0,                                            // key
         queryParams[0] ? queryParams : 0,             // queryParams
         0,                                            // subResource

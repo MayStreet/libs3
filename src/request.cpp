@@ -438,6 +438,10 @@ static S3Status compose_amz_headers(const RequestParams *params,
                           params->bucketContext.securityToken);
     }
 
+    if (params->bucketContext.requestPayer == S3RequestPayerRequester) {
+        append_amz_header(values, 0, "x-amz-request-payer", "requester");
+    }
+
     if (!forceUnsignedPayload
         && (params->httpRequestType == HttpRequestTypeGET
             || params->httpRequestType == HttpRequestTypeCOPY
