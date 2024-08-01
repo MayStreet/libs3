@@ -204,7 +204,8 @@ static void request_headers_done(Request *request)
     // returning information about the error response itself
     if (request->propertiesCallback &&
         (request->httpResponseCode >= 200) &&
-        (request->httpResponseCode <= 299)) {
+        (request->httpResponseCode <= 299) &&
+        (request->status == S3StatusOK)) {
         request->status = (*(request->propertiesCallback))
             (&(request->responseHeadersHandler.responseProperties),
              request->callbackData);
