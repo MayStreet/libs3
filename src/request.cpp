@@ -190,7 +190,7 @@ static void request_headers_done(Request *request)
     if (curl_easy_getinfo(request->curl, CURLINFO_RESPONSE_CODE,
                           &httpResponseCode) != CURLE_OK) {
         // Not able to get the HTTP response code - error
-        request->status = S3StatusInternalError;
+        request->status = S3StatusUnableToGetHttpResponseCode;
         return;
     }
     else {
@@ -298,7 +298,7 @@ static size_t curl_write_func(void *ptr, size_t size, size_t nmemb,
     // Else, consider this an error - S3 has sent back data when it was not
     // expected
     else {
-        request->status = S3StatusInternalError;
+        request->status = S3StatusUnexpectedBody;
     }
 
     return ((request->status == S3StatusOK) ? len : 0);
@@ -1481,7 +1481,7 @@ S3Status request_api_initialize(const char *userAgentInfo, int flags,
     if (curl_global_init(CURL_GLOBAL_ALL &
                          ~((flags & S3_INIT_WINSOCK) ? 0 : CURL_GLOBAL_WIN32))
         != CURLE_OK) {
-        return S3StatusInternalError;
+        return S3StatusCurlGlobalInitFailed;
     }
     verifyPeer = (flags & S3_INIT_VERIFY_PEER) != 0;
 
@@ -1642,7 +1642,7 @@ void request_perform(const RequestParams *params, S3RequestContext *context)
         else {
             if (request->status == S3StatusOK) {
                 request->status = (code == CURLM_OUT_OF_MEMORY) ?
-                    S3StatusOutOfMemory : S3StatusInternalError;
+                    S3StatusOutOfMemory : S3StatusCurlMultiAddHandleFailed;
             }
             request_finish(request);
         }
@@ -1766,7 +1766,7 @@ S3Status request_curl_code_to_status(CURLcode code)
 #endif
         return S3StatusServerFailedVerification;
     default:
-        return S3StatusInternalError;
+        return S3StatusUnexpectedCurlCode;
     }
 }
 

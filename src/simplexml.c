@@ -201,7 +201,7 @@ S3Status simplexml_add(SimpleXml *simpleXml, const char *data, int dataLen)
     if (!simpleXml->xmlParser &&
         (!(simpleXml->xmlParser = xmlCreatePushParserCtxt
            (&saxHandlerG, simpleXml, 0, 0, 0)))) {
-        return S3StatusInternalError;
+        return S3StatusXmlCreatePushParserCtxtFailed;
     }
 
     if (xmlParseChunk((xmlParserCtxtPtr) simpleXml->xmlParser, 
