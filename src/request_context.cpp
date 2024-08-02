@@ -141,12 +141,12 @@ static S3Status process_request_context(S3RequestContext *requestContext, int *r
 
     while ((msg = curl_multi_info_read(requestContext->curlm, &junk))) {
         if (msg->msg != CURLMSG_DONE) {
-            return S3StatusInternalError;
+            return S3StatusCurlMultiInfoDidNotReportDone;
         }
         Request *request;
         if (curl_easy_getinfo(msg->easy_handle, CURLINFO_PRIVATE,
                               (char **) (char *) &request) != CURLE_OK) {
-            return S3StatusInternalError;
+            return S3StatusCurlEasyGetInfoFailed;
         }
         // Remove the request from the list of requests
         if (request->prev == request->next) {
@@ -168,7 +168,7 @@ static S3Status process_request_context(S3RequestContext *requestContext, int *r
         }
         if (curl_multi_remove_handle(requestContext->curlm,
                                      msg->easy_handle) != CURLM_OK) {
-            return S3StatusInternalError;
+            return S3StatusCurlMultiRemoveHandleFailed;
         }
         // Finish the request, ensuring that all callbacks have been made,
         // and also releases the request
@@ -200,7 +200,7 @@ S3Status S3_runonce_request_context(S3RequestContext *requestContext,
         case CURLM_OUT_OF_MEMORY:
             return S3StatusOutOfMemory;
         default:
-            return S3StatusInternalError;
+            return S3StatusCurlMultiPerformFailed;
         }
 
         s3_status = process_request_context(requestContext, &retry);

@@ -267,7 +267,6 @@ typedef enum
      * Errors that prevent the S3 request from being issued or response from
      * being read
      **/
-    S3StatusInternalError                                   ,
     S3StatusOutOfMemory                                     ,
     S3StatusInterrupted                                     ,
     S3StatusInvalidBucketNameTooLong                        ,
@@ -315,6 +314,16 @@ typedef enum
     S3StatusConnectionFailed                                ,
     S3StatusAbortedByCallback                               ,
     S3StatusNotSupported                                    ,
+    S3StatusUnableToGetHttpResponseCode                     ,
+    S3StatusUnexpectedBody                                  ,
+    S3StatusCurlGlobalInitFailed                            ,
+    S3StatusCurlMultiAddHandleFailed                        ,
+    S3StatusUnexpectedCurlCode                              ,
+    S3StatusCurlMultiInfoDidNotReportDone                   ,
+    S3StatusCurlEasyGetInfoFailed                           ,
+    S3StatusCurlMultiRemoveHandleFailed                     ,
+    S3StatusCurlMultiPerformFailed                          ,
+    S3StatusXmlCreatePushParserCtxtFailed                   ,
 
     /**
      * Errors from the S3 service

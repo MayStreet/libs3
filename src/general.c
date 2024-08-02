@@ -66,7 +66,6 @@ const char *S3_get_status_name(S3Status status)
             return #s
 
         handlecase(OK);
-        handlecase(InternalError);
         handlecase(OutOfMemory);
         handlecase(Interrupted);
         handlecase(InvalidBucketNameTooLong);
@@ -114,6 +113,16 @@ const char *S3_get_status_name(S3Status status)
         handlecase(ConnectionFailed);
         handlecase(AbortedByCallback);
         handlecase(NotSupported);
+        handlecase(UnableToGetHttpResponseCode);
+        handlecase(UnexpectedBody);
+        handlecase(CurlGlobalInitFailed);
+        handlecase(CurlMultiAddHandleFailed);
+        handlecase(UnexpectedCurlCode);
+        handlecase(CurlMultiInfoDidNotReportDone);
+        handlecase(CurlEasyGetInfoFailed);
+        handlecase(CurlMultiRemoveHandleFailed);
+        handlecase(CurlMultiPerformFailed);
+        handlecase(XmlCreatePushParserCtxtFailed);
         handlecase(ErrorAccessDenied);
         handlecase(ErrorAccountProblem);
         handlecase(ErrorAmbiguousGrantByEmailAddress);
