@@ -39,6 +39,7 @@
 #include "response_headers_handler.h"
 
 #include "vla.hpp"
+#include <cstdint>
 #include <mutex>
 
 #ifdef __APPLE__
@@ -1766,7 +1767,10 @@ S3Status request_curl_code_to_status(CURLcode code)
 #endif
         return S3StatusServerFailedVerification;
     default:
-        return S3StatusUnexpectedCurlCode;
+        static_assert(sizeof(S3Status) == sizeof(std::int32_t));
+        static_assert(sizeof(CURLcode) == sizeof(std::int32_t));
+        static_assert(sizeof(int) == sizeof(std::int32_t));
+        return static_cast<S3Status>(S3StatusUnexpectedCurlCode | (code << 16));
     }
 }
 

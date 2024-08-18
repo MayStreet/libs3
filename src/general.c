@@ -60,6 +60,9 @@ void S3_deinitialize()
 
 const char *S3_get_status_name(S3Status status)
 {
+    unsigned u = status;
+    u &= 65535U;
+    status = u;
     switch (status) {
 #define handlecase(s)                           \
         case S3Status##s:                       \
