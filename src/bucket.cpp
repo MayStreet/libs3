@@ -655,7 +655,10 @@ static void listBucketCompleteCallback(S3Status requestStatus,
 
     // Make the callback if there is anything
     if (lbData->contentsCount || lbData->commonPrefixesCount) {
-        make_list_bucket_callback(lbData);
+        const S3Status status = make_list_bucket_callback(lbData);
+        if (status != S3StatusOK) {
+          requestStatus = status;
+        }
     }
 
     (*(lbData->responseCompleteCallback))
