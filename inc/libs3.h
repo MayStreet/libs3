@@ -418,7 +418,8 @@ typedef enum
     S3StatusHttpErrorForbidden                              ,
     S3StatusHttpErrorNotFound                               ,
     S3StatusHttpErrorConflict                               ,
-    S3StatusHttpErrorUnknown
+    S3StatusHttpErrorUnknown                                ,
+    S3StatusMax = 2147483647
 } S3Status;
 
 
